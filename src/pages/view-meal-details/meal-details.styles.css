@@ -1,0 +1,16 @@
+.edit-btn{
+    color: indigo;
+}
+
+.btn-icon{
+    margin-left: 1em;
+}
+
+.back-nav{
+    margin-right: 1em;
+}
+
+.back-nav:active{
+    color: indigo;
+    border: 2px solid pink;
+}

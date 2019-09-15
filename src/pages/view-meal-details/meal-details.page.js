@@ -1,12 +1,41 @@
-import React from 'react';
+import React from "react";
+import {Link} from 'react-router-dom';
+import "./meal-details.styles.css";
 
-function MealDetailsPage({match}){
-    console.log("Match prop in details page: ", match);
-    return(
-        <>
-        <h1>Meal details</h1>
-        </>
-    );
+function MealDetailsPage({ match }) {
+  const handleDelete = () => {
+    alert("Are you sure, this cant  be undone?");
+  };
+
+  const handleMealEdit = () => {
+    alert("Edit page coming soon");
+  };
+
+  const handleBackNav = () => {
+    // props.history.push("/");
+  };
+  console.log("Match prop in details page: ", match);
+  return (
+    <>
+      <h1>
+        <Link to="/">
+          <i
+            className="fa fa-chevron-left back-nav"
+          ></i>
+        </Link>
+        Meal details
+      </h1>
+
+      <section className="action-btns">
+        <button className="chow-btn-outline edit-btn" onClick={handleMealEdit}>
+          Edit<i className="fa fa-edit btn-icon"></i>
+        </button>
+        <button className="chow-btn" onClick={handleDelete}>
+          Delete<i className="fa fa-trash btn-icon"></i>
+        </button>
+      </section>
+    </>
+  );
 }
 
 export default MealDetailsPage;

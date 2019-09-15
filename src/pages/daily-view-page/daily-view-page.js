@@ -44,9 +44,8 @@ const DailyViewPage = props => {
     props.history.push("/create");
   };
 
-  const gotoMealDetails = (e) =>{
-    console.log("View details event: ", e);
-    props.history.push("/details/randomth");
+  const gotoMealDetails = (params) =>{
+    props.history.push(`/details/${params.id}`);
   }
 
   return (

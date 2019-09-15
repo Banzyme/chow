@@ -26,7 +26,7 @@ const GroupedListItem = ({ mealOptions, period, viewItemDetails }) => {
       <section className="list-item">
         <div className="list-item-bullet">{period}</div>
 
-        <div className="list-item-content" onClick={viewItemDetails}>
+        <div className="list-item-content" onClick={ () => viewItemDetails(visibleMealOption)}>
           {visibleMealOption ? visibleMealOption.shortName : ""}
           <p className="descrList">
             <span>
