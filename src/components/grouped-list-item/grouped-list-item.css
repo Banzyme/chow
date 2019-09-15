@@ -14,6 +14,7 @@
 
 .list-item-content{
     margin-top: 0.4em;
+    font-weight: 500;
 }
 
 .list-item-action-btn{
@@ -28,4 +29,5 @@
 
 .descrList{
     font-size: 0.7em;
+    color: rgba(0, 0, 0, 0.6);
 }

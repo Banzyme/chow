@@ -31,9 +31,9 @@ const GroupedListItem = ({mealOptions, period}) => {
 
         <div className="list-item-content">
         { visibleMealOption? visibleMealOption.shortName:'' }
-        <ul className="descrList">
-          <li>{ visibleMealOption? visibleMealOption.description:'' }</li>
-        </ul>
+        <p className="descrList">
+          <span>{ visibleMealOption? visibleMealOption.description:'' }</span>
+        </p>
         </div>
         <div className="list-item-action-btn" onClick={viewNextOption}>
           <i className="fa fa-chevron-right"></i>
