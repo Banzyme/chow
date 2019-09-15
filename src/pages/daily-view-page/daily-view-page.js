@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./daily-view-page.css";
 import GroupedListItem from "../../components/grouped-list-item/grouped-list-item";
-import TestItemsList, { periods } from "../../testdata/seed";
+import { periods } from "../../data/seed";
 
 
 const getMealsForPeriod = ({repository, period}) => {
@@ -12,7 +12,6 @@ const getMealsForPeriod = ({repository, period}) => {
 }
 
 const DailyViewPage = props => {
-  const db_mock = TestItemsList;
   const [hasErrors, setHasErros] = useState(false);
   const [mealOptions, setMealOptions] = useState([]);
 
