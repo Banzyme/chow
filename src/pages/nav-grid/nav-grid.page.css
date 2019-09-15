@@ -1,0 +1,27 @@
+.navGrid{
+    margin-top: 1em;
+    margin-bottom: 1em;
+    background: #fcf8ff;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-column-gap: 0.5em;
+    grid-row-gap: 1em;
+  }
+  
+  .navGrid>section{
+    text-align: center;
+    font-size: 1.5em;
+    background: white;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    /* background-image: url('/src/test.png'); */
+  }
+  
+  .grid-cell:hover{
+    background: deeppink;
+    color: white;
+    font-weight: bold;
+  }
+  
