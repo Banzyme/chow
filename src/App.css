@@ -29,6 +29,23 @@ footer > span {
   border-radius: 5px;
 }
 
+.chow-text-input:focus, .chow-text-input:hover {
+  border: 2px solid deeppink;
+  outline: none;
+}
+
+.chow-text-area {
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 1px solid indigo;
+  border-radius: 5px;
+}
+
+.chow-text-area:hover, .chow-text-area:focus {
+  border: 2px solid deeppink;
+  outline: none;
+}
+
 .chow-btn {
   outline: none;
   box-shadow: none;

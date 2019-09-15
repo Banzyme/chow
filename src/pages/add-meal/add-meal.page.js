@@ -89,6 +89,7 @@ function AddMealPage() {
             onChange={handleMealDescrChange}
             name="mealDescr"
             id="mealDescr"
+            className="chow-text-area"
             placeholder="e.g. 150g herbal shake with semi-skimmed milk"
           />
         </section>
