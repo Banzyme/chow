@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import SimpleBackBtn from './../../components/back-btn';
 import "./add-meal.page.css";
 
 const postDataToRemoteServer = async ({ data }) => {
@@ -75,6 +76,7 @@ function AddMealPage() {
             onChange={handleMealNameChange}
             name="mealName"
             id="mealName"
+            className="chow-text-input"
             placeholder="e.g. Protein shake"
           />
         </section>
@@ -101,6 +103,7 @@ function AddMealPage() {
             max="7"
             name="dayNum"
             id="dayNum"
+            className="chow-text-input"
             placeholder="e.g. 1 - Monday, 2 -Tuesday etc."
           />
         </section>
@@ -115,12 +118,14 @@ function AddMealPage() {
             max="4"
             name="period"
             id="period"
+            className="chow-text-input"
             placeholder="e.g. 1 - Breakfast, 2 -Lunch etc."
           />
         </section>
 
-        <section className="form-group">
-          <button>Save</button>
+        <section className="action-btns">
+          <button className="chow-btn">Save</button>
+          <SimpleBackBtn/>
         </section>
       </form>
     </>

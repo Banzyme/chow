@@ -21,3 +21,16 @@ a{
   text-decoration: none;
   color: indigo;
 }
+
+button:hover,
+button:focus {
+    border: 1px solid deeppink;
+}
+
+button:focus {
+    outline: 1px solid #fff;
+}
+
+button:active {
+    transform: scale(0.99);
+}

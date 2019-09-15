@@ -1,21 +1,50 @@
-main{
+main {
   padding: 8px;
   min-height: 82vh;
 }
 
-.App-header{
+.App-header {
   background: indigo;
   color: white;
   padding: 0.5em 1em;
 }
 
-footer{
+footer {
   margin-bottom: 1em;
 }
 
-footer, footer>span{
+footer,
+footer > span {
   color: grey;
   text-align: center;
   font-size: 0.8em;
   text-decoration: none;
+}
+
+/* In-house themimg */
+.chow-text-input {
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 1px solid indigo;
+  border-radius: 5px;
+}
+
+.chow-btn {
+  outline: none;
+  box-shadow: none;
+  border: none;
+  background: indigo;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.chow-btn-outline {
+  border-color: indigo;
+  border-style: solid;
+  border-width: 2px;
+  background: white;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
 }

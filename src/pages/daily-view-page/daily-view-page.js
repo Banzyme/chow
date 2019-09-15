@@ -48,7 +48,7 @@ const DailyViewPage = props => {
     <>
       <header className="page-header">
         <section>
-          <h1>Today</h1>
+          <h1>Daily meal plan</h1>
         </section>
         <section>
           <h1>
