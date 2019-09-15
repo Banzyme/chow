@@ -33,34 +33,12 @@ const DailyViewPage = props => {
   }, []);
 
   const currentDateTime = new Date();
-  const dayNum = currentDateTime.getDay() == 0? 7: currentDateTime.getDay();
-
-  // const filters = mealOptions.filter(item => {
-  //   return item.day === dayNum && item.period == 1
-  // });
-  // console.log("Filtered for today: ", filters);
-
   const breakfastMeals = getMealsForPeriod({repository: mealOptions, period: periods.breakfast});
-
-  const group_2 = db_mock.filter(item => {
-    return item.day === dayNum && item.period === periods.brunch;
-  });
-
-  const group_3 = db_mock.filter(item => {
-    return item.day === dayNum && item.period === periods.afternoon;
-  });
-
-  const group_4 = db_mock.filter(item => {
-    return item.day === dayNum && item.period === periods.lateAfternoon;
-  });
-
-  const group_5 = db_mock.filter(item => {
-    return item.day === dayNum && item.period === periods.lateAfternoon;
-  });
-
-  const group_6 = db_mock.filter(item => {
-    return item.day === dayNum && item.period === periods.lateAfternoon;
-  });
+  const brunchMeals = getMealsForPeriod({repository: mealOptions, period: periods.brunch});
+  const lunchMeals = getMealsForPeriod({repository: mealOptions, period: periods.lunch});
+  const afternoonSnackMeals = getMealsForPeriod({repository: mealOptions, period: periods.afternoonSnack});
+  const supperMeals = getMealsForPeriod({repository: mealOptions, period: periods.supper});
+  const eveningSnackMeals = getMealsForPeriod({repository: mealOptions, period: periods.eveningSnack});
 
   const viewAddPage = () => {
     props.history.push("/create");
@@ -83,9 +61,11 @@ const DailyViewPage = props => {
           <hr />
         </section>
         <GroupedListItem mealOptions={breakfastMeals} />
-        <GroupedListItem mealOptions={group_2} />
-        <GroupedListItem mealOptions={group_2} />
-        <GroupedListItem mealOptions={group_2} />
+        <GroupedListItem mealOptions={brunchMeals} />
+        <GroupedListItem mealOptions={lunchMeals} />
+        <GroupedListItem mealOptions={afternoonSnackMeals} />
+        <GroupedListItem mealOptions={supperMeals} />
+        <GroupedListItem mealOptions={eveningSnackMeals} />
       </article>
       <footer>
         <button onClick={viewAddPage}>Add new</button>

@@ -5,7 +5,6 @@ const GroupedListItem = ({mealOptions}) => {
 
   const [mealsList, setmealsList] = useState(mealOptions? mealOptions:[]);
   const [mealOptionIdx, setMealOptionIdx] = useState(0);
-  const defaultMeal = mealsList? mealsList[0]: {};
   const [visibleMealOption, setVisibleMealOption] = useState(mealsList[0]);
 
   const viewNextOption = () =>{
@@ -18,7 +17,6 @@ const GroupedListItem = ({mealOptions}) => {
   };
 
   useEffect(()=>{
-    console.log("props changed: ", mealOptions);
     setVisibleMealOption(mealOptions[0]);
     setmealsList(mealOptions);
   }, [mealOptions])
