@@ -16,10 +16,12 @@ export const daysInAWeek = {
 };
 
 export const periods = {
-  morning: "Morning 1",
-  brunch: "Morning 2",
-  afternoon: "lunch",
-  lateAfternoon: "lunch second"
+  breakfast: 1,
+  brunch: 2,
+  lunch:3,
+  afternoonSnack: 4,
+  supper: 5,
+  eveningSnack:6
 };
 
 const TestItemsList = [

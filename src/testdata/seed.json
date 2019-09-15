@@ -1,0 +1,16 @@
+[
+    {
+        "uniqueIdentifier": "dsg",
+        "period": 3,
+        "day": 1,
+        "shortName": "morning option",
+        "description": "Test from file 1"
+    },
+    {
+        "uniqueIdentifier": "sdsdf21",
+        "period": 3,
+        "day": 1,
+        "shortName": "morning option",
+        "description": "need csv to json converter"
+    }
+]
