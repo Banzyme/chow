@@ -2,7 +2,7 @@
 # Helper script to deploy the production optimised build of the react app to Azure
 
 ResourceGroupName="chow-rg"
-Location="southafricanorth"
+Location="westus"   # Staric webapps are only available in  west us currently
 StorageAccountName="chowstorageaccount"
 StorageSKU="Standard_LRS"
 StorageKind="StorageV2"   # Allowed values: BlobStorage, BlockBlobStorage, FileStorage, Storage, StorageV2
@@ -12,7 +12,7 @@ StorageAccessTier="Hot"
 SiteName="chow"
 AppName="Chow Meals" 
 BuildDir="Directory where your production optimised build resides"
-GitHubRepoUrl=""
+GitHubRepoUrl="https://github.com/Banzyme/chow"
 
 # Set the default location for all resources
 az config set default.location=$Location
