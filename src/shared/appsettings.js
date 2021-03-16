@@ -1,5 +1,5 @@
 export const AppSettings = {
     mealsAPI:{
-        baseURL: ""
+        baseURL: "api"
     }
   };

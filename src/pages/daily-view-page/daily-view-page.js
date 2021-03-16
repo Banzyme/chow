@@ -15,7 +15,7 @@ const getMealsForPeriod = ({repository, period}) => {
 const DailyViewPage = props => {
   const [hasErrors, setHasErros] = useState(false);
   const [mealOptions, setMealOptions] = useState([]);
-  const fetchUrl = `${AppSettings.mealsAPI.baseURL}/chow-options/all`;
+  const fetchUrl = `${AppSettings.mealsAPI.baseURL}/mealoptions`;
 
   useEffect(() => {
     if (localStorage.getItem("mealOptionsList") === null) {
@@ -24,12 +24,9 @@ const DailyViewPage = props => {
 
       try{
         fetch(fetchUrl)
-        .then(res =>  {
-          // if(res){
-          //   return res.json();
-          // }
-        })
+        .then(res =>  res.json())
         .then(res => {
+          console.log(res);
           // setMealOptions(res);
           // localStorage.setItem("mealOptionsList", JSON.stringify(res));
         })
