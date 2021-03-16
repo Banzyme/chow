@@ -24,6 +24,16 @@ export const periods = {
   eveningSnack:6
 };
 
+export const mealCategory = {
+  breakfast: "BreakFast",
+  brunch: "Brunch",
+  lunch: "Lunch",
+  afternoonSnack: "Afternoon Snack",
+  supper: "Supper",
+  eveningSnack: "Evening Snack",
+  other: "Other",
+};
+
 export const FakeMealOptions = [
   {
     uniqueIdentifier: 11,

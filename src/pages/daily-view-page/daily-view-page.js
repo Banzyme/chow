@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import "./daily-view-page.css";
 import GroupedListItem from "../../components/grouped-list-item/grouped-list-item";
-import { periods, FakeMealOptions } from "../../data/seed";
+import { mealCategory } from "../../models/models";
 import {AppSettings} from '../../shared/shared'
+import "./daily-view-page.css";
 
 
-const getMealsForPeriod = ({repository, period}) => {
-  const dayNum = new Date().getDay() == 0? 7: new Date().getDay();
-  return repository.filter(item => {
-    return item.day === dayNum && item.period === period;
-  });
+const filterMealByCategory = ({allMealsList, category}) => {
+  if(allMealsList){
+    return allMealsList.filter(item => item.category === category);
+  }
+  return []
 }
 
 const DailyViewPage = props => {
@@ -19,42 +19,39 @@ const DailyViewPage = props => {
 
   useEffect(() => {
     if (localStorage.getItem("mealOptionsList") === null) {
-      setMealOptions(FakeMealOptions);
-      // console.log(FakeMealOptions);
-
       try{
         fetch(fetchUrl)
         .then(res =>  res.json())
         .then(res => {
-          console.log(res);
-          // setMealOptions(res);
-          // localStorage.setItem("mealOptionsList", JSON.stringify(res));
+          console.debug(`${res?.length} meal options returned from server`);
+          setMealOptions(res);
+          localStorage.setItem("mealOptionsList", JSON.stringify(res));
         })
         .catch((e) => {
           setHasErros({ hasErrors: true });
           console.error(e);
-          // setMealOptions(FakeMealOptions);
         });
       }catch{
         console.warn("Server is unresponsive");
       }
       
-
     } else {
       const cachedData = localStorage.getItem("mealOptionsList");
-      setMealOptions(JSON.parse(cachedData));
+      const parseMeals = JSON.parse(cachedData)
+      console.debug(`${parseMeals?.length} meal options returned from local storage cache`);
+      setMealOptions(parseMeals);
     }
   }, []);
 
   const currentDateTime = new Date();
-  const breakfastMeals = getMealsForPeriod({repository: mealOptions, period: periods.breakfast});
-  const brunchMeals = getMealsForPeriod({repository: mealOptions, period: periods.brunch});
-  const lunchMeals = getMealsForPeriod({repository: mealOptions, period: periods.lunch});
-  const afternoonSnackMeals = getMealsForPeriod({repository: mealOptions, period: periods.afternoonSnack});
-  const supperMeals = getMealsForPeriod({repository: mealOptions, period: periods.supper});
-  const eveningSnackMeals = getMealsForPeriod({repository: mealOptions, period: periods.eveningSnack});
+  const breakfastMeals = filterMealByCategory({allMealsList: mealOptions, category: mealCategory.breakfast});
+  const brunchMeals = filterMealByCategory({allMealsList: mealOptions, category: mealCategory.brunch});
+  const lunchMeals = filterMealByCategory({allMealsList: mealOptions, category: mealCategory.lunch});
+  const afternoonSnackMeals = filterMealByCategory({allMealsList: mealOptions, category: mealCategory.afternoonSnack});
+  const supperMeals = filterMealByCategory({allMealsList: mealOptions, category: mealCategory.supper});
+  const eveningSnackMeals = filterMealByCategory({allMealsList: mealOptions, category: mealCategory.eveningSnack});
 
-  const viewAddPage = () => {
+  const addNewMealPage = () => {
     props.history.push("/create");
   };
 
@@ -86,7 +83,7 @@ const DailyViewPage = props => {
         <GroupedListItem mealOptions={eveningSnackMeals} period="6" viewItemDetails={gotoMealDetails}/>
       </article>
       <footer>
-        <button className="action-btn chow-btn" onClick={viewAddPage}>Add new</button>
+        <button className="action-btn chow-btn" onClick={addNewMealPage}>Add new</button>
       </footer>
     </>
   );

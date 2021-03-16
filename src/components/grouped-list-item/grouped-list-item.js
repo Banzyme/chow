@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./grouped-list-item.css";
 
 const GroupedListItem = ({ mealOptions, period, viewItemDetails }) => {
-  console.log(mealOptions)
+  
   const [mealsList, setmealsList] = useState(mealOptions ? mealOptions : []);
   const [mealOptionIdx, setMealOptionIdx] = useState(0);
   const [visibleMealOption, setVisibleMealOption] = useState(mealsList[0]);
@@ -28,7 +28,7 @@ const GroupedListItem = ({ mealOptions, period, viewItemDetails }) => {
         <div className="list-item-bullet">{period}</div>
 
         <div className="list-item-content" onClick={ () => viewItemDetails(visibleMealOption)}>
-          {visibleMealOption ? visibleMealOption.shortName : ""}
+          {visibleMealOption ? visibleMealOption.name : ""}
           <p className="descrList">
             <span>
               {visibleMealOption ? visibleMealOption.description : ""}

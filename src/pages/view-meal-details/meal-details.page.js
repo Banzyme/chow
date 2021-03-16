@@ -1,5 +1,5 @@
 import React from "react";
-import {Link} from 'react-router-dom';
+import {LeftBackArrow} from './../../components/back-btn'
 import "./meal-details.styles.css";
 
 function MealDetailsPage({ match }) {
@@ -11,18 +11,11 @@ function MealDetailsPage({ match }) {
     alert("Edit page coming soon");
   };
 
-  const handleBackNav = () => {
-    // props.history.push("/");
-  };
-  console.log("Match prop in details page: ", match);
+  console.debug("Match prop in details page: ", match);
   return (
     <>
       <h1>
-        <Link to="/">
-          <i
-            className="fa fa-chevron-left back-nav"
-          ></i>
-        </Link>
+        <LeftBackArrow />
         Meal details
       </h1>
 

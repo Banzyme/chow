@@ -2,7 +2,7 @@ import './nav-grid.page.css';
 
 function NavGrid(props) {
   const onaction = () => {
-    console.log("History:  ", props.history);
+    console.debug("History:  ", props.history);
     props.history.push("/events");
   };
   return (

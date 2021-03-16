@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import SimpleBackBtn from './../../components/back-btn';
+import {AppSettings} from '../../shared/shared'
 import "./add-meal.page.css";
 
 const postDataToRemoteServer = async ({ data }) => {
@@ -10,7 +11,8 @@ const postDataToRemoteServer = async ({ data }) => {
     },
     body: JSON.stringify(data)
   };
-  return fetch("https://chow-api.azurewebsites.net/api/chow-options", postOptions)
+  console.debug(`Adding new meal to db: ${data}`);
+  return fetch(`${AppSettings.mealsAPI.baseURL}/mealoptions`, postOptions)
     .then(response => response.json())
     .then(res => res)
     .catch(err => {
@@ -24,12 +26,13 @@ function AddMealPage() {
 
   const [mealName, setMealName] = useState("");
   const [mealDescr, setMealDescr] = useState("");
+  const [mealCategory, setMealCategory] = useState("");
   const [period, setPeriod] = useState(1);
   const [dayNum, setDayNum] = useState(1);
 
   const handleMealNameChange = event => setMealName(event.target.value);
   const handleMealDescrChange = event => setMealDescr(event.target.value);
-  const handlePeriodChange = event => setPeriod(event.target.value);
+  const handleCategoryChange = event => setMealCategory(event.target.value);
   const handleDayNumChange = event => setDayNum(event.target.value);
 
   const resetForm = () => {
@@ -54,9 +57,10 @@ function AddMealPage() {
 
     setIsLoading(true);
     try {
-      const res = await postDataToRemoteServer({ data: formVal });
+      await postDataToRemoteServer({ data: formVal });
+      console.debug("New meal successfully added");
     } catch (error) {
-      console.error("Error submitting your form: ", error);
+      console.error("Error adding new meal", error);
     } finally {
       resetForm();
     }
@@ -94,7 +98,7 @@ function AddMealPage() {
           />
         </section>
 
-        <section className="form-group">
+        {/* <section className="form-group">
           <label htmlFor="dayNum">Day number</label>
           <input
             type="number"
@@ -107,20 +111,18 @@ function AddMealPage() {
             className="chow-text-input"
             placeholder="e.g. 1 - Monday, 2 -Tuesday etc."
           />
-        </section>
+        </section> */}
 
         <section className="form-group">
-          <label htmlFor="period">Period</label>
+          <label htmlFor="Category">Period</label>
           <input
-            type="number"
-            value={period}
-            onChange={handlePeriodChange}
-            min="1"
-            max="6"
-            name="period"
-            id="period"
+            type="text"
+            value={mealCategory}
+            onChange={handleCategoryChange}
+            name="category"
+            id="category"
             className="chow-text-input"
-            placeholder="e.g. 1 - Breakfast, 2 -Lunch etc."
+            placeholder="e.g. Breakfast, Lunch, Supper etc."
           />
         </section>
 
