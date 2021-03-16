@@ -2,42 +2,20 @@
 # Helper script to deploy the production optimised build of the react app to Azure
 
 ResourceGroupName="chow-rg"
-Location="westus"   # Staric webapps are only available in  west us currently
-StorageAccountName="chowstorageaccount"
-StorageSKU="Standard_LRS"
-StorageKind="StorageV2"   # Allowed values: BlobStorage, BlockBlobStorage, FileStorage, Storage, StorageV2
-StorageContainerName="chowsitecontainer01"
-StorageContainerPublicAccessScope="container"  # Allowed values: blob, container, off
-StorageAccessTier="Hot"
+Location="WestUs2"   # Staric webapps are only available in  west us currently
 SiteName="chowstaticwebapp"
 AppName="Chow Meals" 
-BuildLocation="build/"  # "Directory where your production optimised build resides"
-APIDir="api/"
-GitHubRepoUrl="https://github.com/Banzyme/chow"
+BuildLocation="build"  # "Directory where your production optimised build resides"
+APIDir="api"
+GitHubRepoUrl="https://github.com/peculiaxyz/chow"
+GitHubRepoBranch="main"
+GithubPAT=""
 
-# Set the default location for all resources
-az config set default.location=$Location
 
 # First make sure we have a resource group
 az group create -g $ResourceGroupName\
+ -l $Location\
  --tags KeepRunning=False FullAppName="$AppName"  displayName="Chow Meals Resource Group" -o table
-
-
-# Create the storage account
-az storage account create\
-  -n $StorageAccountName \
-  -g $ResourceGroupName  \
-  --sku $StorageSKU \
-  --kind  $StorageKind \
-  --access-tier $StorageAccessTier \
-  --tags KeepRunning=False FullAppName="$AppName" displayName="Chow Meals Primary Storage Acount" --verbose -o yamlc
-
-
-# Create a blob container to host the site - allow public access for all blobs within the container
-az storage container create -n $StorageContainerName \ 
- --sas-token $SAS_TOKEN \
- --account-name $StorageAccountName \
- --public-access $StorageContainerPublicAccessScope
 
 
 
@@ -53,4 +31,12 @@ az staticwebapp create \
     --api-location $APIDir \
     --token $GITHUB_ACCESS_TOKEN \
     --tags KeepRunning=False FullAppName="$AppName" displayName="Chow Meals Static Web App" --verbose -o yamlc
+
+
+az staticwebapp create -n "demo312"\
+ -g $ResourceGroupName \
+ -l $Location \
+ -b $GitHubRepoBranch \
+ -s "$GitHubRepoUrl" \
+ --token "$GithubPAT" 
 
