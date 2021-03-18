@@ -78,14 +78,14 @@ function AddMealPage(props) {
 
   const [mealName, setMealName] = useState("");
   const [mealDescr, setMealDescr] = useState("");
+  const [samplePicURL, setSamplePicURL] = useState("");
   const [mealCategory, setMealCategory] = useState(categoryOptions[0].value);
   const [estimatedMealcalories, setCalories] = useState(10);
-  const [snackState, setSnackState] = useState({isOpen:false, msg: "Success", timeout: 2000, severity:"info", lastRide: false});
-  let canIgo = false;
+  const [snackState, setSnackState] = useState({ isOpen: false, msg: "Success", timeout: 2000, severity: "info", lastRide: false });
 
 
   const goHome = () => {
-    if(snackState.lastRide){
+    if (snackState.lastRide) {
       props.history.push("/");
     }
   };
@@ -101,34 +101,36 @@ function AddMealPage(props) {
     }
     setMealNameIsInvalid(isInValid);
   }
+
   const handleMealDescrChange = event => setMealDescr(event.target.value);
   const handleCategoryChange = event => setMealCategory(event.target.value);
   const handleCalorieChange = event => setCalories(event.target.value);
+  const handleSamplePicURLChange = event => setSamplePicURL(event.target.value);
 
   const resetForm = () => {
     setIsLoading(false);
     setMealName("");
     setMealDescr("");
     setMealCategory("");
-    setCalories(0);
-  };
+    setSamplePicURL("");
+    setCalories(10);
+  }
 
   const validateForm = () => {
     return isNotNullOrEmpty(mealName) && isNotNullOrEmpty(mealCategory) && isNotNullOrEmpty(mealDescr) && estimatedMealcalories > 0;
   }
 
-  const handleSnackClose = ()=> {
+  const handleSnackClose = () => {
     setSnackState({
       isOpen: false
     });
-    console.log("Can i go", canIgo);
     goHome();
   };
 
   const submitNewMealOption = async event => {
     event.preventDefault();
     console.log("Form valid", validateForm());
-    if(!validateForm()){
+    if (!validateForm()) {
       setSnackState({
         msg: "Form is invalid, please correct",
         isOpen: true,
@@ -142,13 +144,12 @@ function AddMealPage(props) {
       category: mealCategory,
       description: mealDescr,
       calories: estimatedMealcalories,
-      thumbnailURL: AppSettings.DefaultThumbnailURL
+      thumbnailURL: samplePicURL ?? AppSettings.DefaultThumbnailURL
     });
 
     setIsLoading(true);
     try {
       await postDataToRemoteServer({ data: formVal.toJson() });
-      canIgo = true;
       setSnackState({
         msg: "New meal successfully added",
         isOpen: true,
@@ -220,18 +221,26 @@ function AddMealPage(props) {
           InputLabelProps={{ shrink: true }}
         />
 
+
+        <TextField
+          label="Sample Picture URL"
+          value={samplePicURL}
+          onChange={handleSamplePicURLChange}
+          placeholder="Enter a publicly accessbile picture url"
+          InputLabelProps={{ shrink: true }}
+        />
+
         <section className="action-btns">
           <button disabled={mealNameIsInvalid} className={mealNameIsInvalid ? "chow-btn-disabled" : "chow-btn"}>Save</button>
-          {/* {mealNameIsInvalid? <button disabled className="chow-btn-disabled">Save</button>: <button className="chow-btn">Save</button>} */}
           <SimpleBackBtn />
         </section>
       </form>
       <Snackbar open={snackState.isOpen} autoHideDuration={snackState.timeout} onClose={handleSnackClose}>
         <Alert severity={snackState.severity}>
-         {snackState.msg}
+          {snackState.msg}
         </Alert>
       </Snackbar>
-      {isLoading ? <LinearProgress color="secondary" /> : "" }
+      {isLoading ? <LinearProgress color="secondary" /> : ""}
     </>
   );
 }
