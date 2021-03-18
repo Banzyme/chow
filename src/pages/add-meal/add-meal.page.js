@@ -3,6 +3,7 @@ import SimpleBackBtn from './../../components/back-btn';
 import {AppSettings} from '../../shared/shared'
 import "./add-meal.page.css";
 
+
 const postDataToRemoteServer = async ({ data }) => {
   const postOptions = {
     method: "POST",

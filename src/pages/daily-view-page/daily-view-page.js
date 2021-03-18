@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import GroupedListItem from "../../components/grouped-list-item/grouped-list-item";
 import { mealCategory } from "../../models/models";
 import {AppSettings} from '../../shared/shared'
+import { MealCard } from "./../../components/components";
 import "./daily-view-page.css";
 
 
@@ -75,6 +76,7 @@ const DailyViewPage = props => {
         <section className="section-divider">
           <hr />
         </section>
+        <MealCard/>
         <GroupedListItem mealOptions={breakfastMeals} period="1" viewItemDetails={gotoMealDetails}/>
         <GroupedListItem mealOptions={brunchMeals} period="2" viewItemDetails={gotoMealDetails}/>
         <GroupedListItem mealOptions={lunchMeals} period="3" viewItemDetails={gotoMealDetails}/>

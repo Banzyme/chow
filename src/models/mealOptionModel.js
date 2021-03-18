@@ -60,8 +60,8 @@ export class MealOptionModel {
         this.calories = jsonData?.calories ?? this.calories;
         this.isLocked = jsonData?.isLocked ?? this.isLocked;
         this.thumbnailURL = jsonData?.thumbnailURL ?? this.thumbnailURL;
-        this.dateCreated = loadDate(jsonData?.dateCreated) ?? this.dateCreated;
-        this.lastModified = loadDate(jsonData?.lastModified) ?? this.lastModified;
+        this.dateCreated = this.loadDate(jsonData?.dateCreated) ?? this.dateCreated;
+        this.lastModified = this.loadDate(jsonData?.lastModified) ?? this.lastModified;
         return  this;
     }
 }
