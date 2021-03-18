@@ -80,8 +80,8 @@ const DailyViewPage = props => {
           <hr />
         </section>
         <MealCard mealOptions={breakfastMeals} viewMealDetailsHanlder={gotoMealDetails} />
-        <GroupedListItem mealOptions={brunchMeals} period="2" viewItemDetails={gotoMealDetails}/>
-        <GroupedListItem mealOptions={lunchMeals} period="3" viewItemDetails={gotoMealDetails}/>
+        <MealCard mealOptions={brunchMeals} viewMealDetailsHanlder={gotoMealDetails} />
+        <MealCard mealOptions={lunchMeals} viewMealDetailsHanlder={gotoMealDetails} />
         <GroupedListItem mealOptions={afternoonSnackMeals} period="4" viewItemDetails={gotoMealDetails}/>
         <GroupedListItem mealOptions={supperMeals} period="5" viewItemDetails={gotoMealDetails}/>
         <GroupedListItem mealOptions={eveningSnackMeals} period="6" viewItemDetails={gotoMealDetails}/>
