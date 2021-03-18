@@ -5,7 +5,7 @@ import {AppSettings} from '../../shared/shared'
 import "./daily-view-page.css";
 
 
-const filterMealByCategory = ({allMealsList, category}) => {
+const filterMealsByCategory = ({allMealsList, category}) => {
   if(allMealsList){
     return allMealsList.filter(item => item.category === category);
   }
@@ -44,12 +44,12 @@ const DailyViewPage = props => {
   }, []);
 
   const currentDateTime = new Date();
-  const breakfastMeals = filterMealByCategory({allMealsList: mealOptions, category: mealCategory.breakfast});
-  const brunchMeals = filterMealByCategory({allMealsList: mealOptions, category: mealCategory.brunch});
-  const lunchMeals = filterMealByCategory({allMealsList: mealOptions, category: mealCategory.lunch});
-  const afternoonSnackMeals = filterMealByCategory({allMealsList: mealOptions, category: mealCategory.afternoonSnack});
-  const supperMeals = filterMealByCategory({allMealsList: mealOptions, category: mealCategory.supper});
-  const eveningSnackMeals = filterMealByCategory({allMealsList: mealOptions, category: mealCategory.eveningSnack});
+  const breakfastMeals = filterMealsByCategory({allMealsList: mealOptions, category: mealCategory.breakfast});
+  const brunchMeals = filterMealsByCategory({allMealsList: mealOptions, category: mealCategory.brunch});
+  const lunchMeals = filterMealsByCategory({allMealsList: mealOptions, category: mealCategory.lunch});
+  const afternoonSnackMeals = filterMealsByCategory({allMealsList: mealOptions, category: mealCategory.afternoonSnack});
+  const supperMeals = filterMealsByCategory({allMealsList: mealOptions, category: mealCategory.supper});
+  const eveningSnackMeals = filterMealsByCategory({allMealsList: mealOptions, category: mealCategory.eveningSnack});
 
   const addNewMealPage = () => {
     props.history.push("/create");
