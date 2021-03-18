@@ -20,7 +20,8 @@ import img from './../static/images/meusli.jpg'
 const useStyles = makeStyles((theme) => ({
     root: {
         maxWidth: 345,
-        height: 260
+        height: 260,
+        borderRadius: 16
     },
     media: {
         height: 0,
@@ -62,7 +63,7 @@ export function MealCard({ mealOptions, viewMealDetailsHanlder }) {
     };
 
     const handleEditClick = () => {
-        viewMealDetailsHanlder(visibleMealOption);
+        
         console.debug("Edit not implemented!");
     }
 
@@ -75,7 +76,7 @@ export function MealCard({ mealOptions, viewMealDetailsHanlder }) {
     }
 
     const swipeHandlers = useSwipeable({
-        onTap: (e) => console.log("User Tapped!", e),
+        onTap: (e) => viewMealDetailsHanlder(visibleMealOption),
         onSwipedLeft: (e) => viewPreviousOption(e),
         onSwipedRight: (e) => viewNextOption(e),
         ...swipeConfig,
@@ -119,18 +120,13 @@ export function MealCard({ mealOptions, viewMealDetailsHanlder }) {
     }, [mealOptions]);   // Reload card if mealOptions change
 
     return (
-        <div id="CardContainer" {...swipeHandlers}>
-            <Card className={classes.root}>
+        <>
+            <Card variant="outlined" raised={true} {...swipeHandlers} className={classes.root}>
                 <CardHeader
                     avatar={
                         <Avatar aria-label="recipe" className={classes.avatar}>
                             {visibleMealOption ? (visibleMealOption.calories ? visibleMealOption.calories : 0) : 0}
                         </Avatar>
-                    }
-                    action={
-                        <IconButton onClick={handleEditClick} aria-label="edit">
-                            <Edit />
-                        </IconButton>
                     }
                     title={visibleMealOption ? visibleMealOption.name : ""}
                     subheader={visibleMealOption ? visibleMealOption.category : ""}
@@ -163,6 +159,6 @@ export function MealCard({ mealOptions, viewMealDetailsHanlder }) {
                     </IconButton>
                 </CardActions>
             </Card>
-        </div>
+        </>
     );
 }
