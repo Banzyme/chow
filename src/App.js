@@ -14,8 +14,8 @@ function App() {
       <main>
         <Switch>
         <Route path="/" exact component={DailyViewPage} />
-        <Route path="/create" component={AddMealPage} />
-        <Route path="/details/:id" component={MealDetailsPage}/>
+        <Route path="/create" exact component={AddMealPage} />
+        <Route path="/details/:id" exact component={MealDetailsPage}/>
         </Switch>
       </main>
       {/* <footer>
