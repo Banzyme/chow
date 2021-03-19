@@ -23,6 +23,17 @@ npm install webpack@nex
 ```
 
 
+### Az Static Web App Notes
+
+* Post login redirect
+    * If you want a user to return to a specific page after login, provide a URL in post_login_redirect_uri query string parameter
+* Removing user identifying info
+    * GET: https://identity.azurestaticapps.net/.auth/purge/<AUTHENTICATION_PROVIDER_NAME>
+    * Or https://<WEB_APP_DOMAIN_NAME>/.auth/purge/<AUTHENTICATION_PROVIDER_NAME>
+
+
+
+
 <br/>
 <hr/>
 Proudly made by <a href="https://peculia.xyz">Peculia IT</a>
