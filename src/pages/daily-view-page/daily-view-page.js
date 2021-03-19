@@ -60,7 +60,7 @@ const DailyViewPage = props => {
   }
 
   useEffect(() => {
-    console.debug("principal info", getUserInfo());
+    getUserInfo();
     if (localStorage.getItem("mealOptionsList") === null) {
       try {
         fetch(fetchUrl)
@@ -104,6 +104,7 @@ const DailyViewPage = props => {
     }
     const payload = await response.json();
     const { clientPrincipal } = payload;
+    console.log("Client principal info: ", payload)
     return clientPrincipal;
   }
 
