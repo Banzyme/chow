@@ -34,9 +34,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": {
-    "/api": {
-      "target": "http://localhost:7071/api"
-    }
-  }
+  "proxy": "http://localhost:7071/api"
 }

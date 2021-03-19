@@ -1,0 +1,4 @@
+{
+    "route": "/create",
+    "allowedRoles": ["authenticated"]
+}
