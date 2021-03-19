@@ -50,6 +50,7 @@ const filterMealsByCategory = ({ allMealsList, category }) => {
 const DailyViewPage = props => {
   const classes = useStyles();
   const [hasErrors, setHasErros] = useState(false);
+  const [currentUser, setCurrentUser] = useState();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const [mealOptions, setMealOptions] = useState([]);
@@ -105,6 +106,7 @@ const DailyViewPage = props => {
     const payload = await response.json();
     const { clientPrincipal } = payload;
     console.log("Client principal info: ", payload)
+    setCurrentUser(clientPrincipal);
     return clientPrincipal;
   }
 
@@ -118,14 +120,18 @@ const DailyViewPage = props => {
 
   const handleLogin = () => {
     // by deafult user will be redirected to home after login (i think...)
+    if(currentUser){
+      setAnchorEl(event.currentTarget);
+      return;
+    }
     props.history.push('/login');
+    window.location.reload(); 
     //
   }
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleOpenLeftMenu = (event) => {
-    // setAnchorEl(event.currentTarget);
     setDrawerOpen(true);
   };
 
@@ -148,7 +154,7 @@ const DailyViewPage = props => {
           <Typography variant="h5" className={classes.title}>
             {AppSettings.Apptitle}
           </Typography>
-          <Button color="inherit" onClick={handleLogin}>Login</Button>
+          <Button color="inherit" onClick={handleLogin}>{currentUser ? currentUser.userDetails : "Login"}</Button>
         </Toolbar>
       </AppBar>
 
