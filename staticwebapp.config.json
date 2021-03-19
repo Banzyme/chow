@@ -1,0 +1,36 @@
+{
+  "routes": [
+    {
+      "route": "/create",
+      "allowedRoles": ["authenticated"]
+    },
+    {
+      "route": "/details/*",
+      "allowedRoles": ["contributer", "reader"]
+    },
+    {
+      "route": "/login",
+      "rewrite": "/.auth/login/twitter"
+    },
+    {
+      "route": "/logout",
+      "redirect": "/.auth/logout"
+    },
+    {
+        "route": "/.auth/login/twitter",
+        "statusCode": 403
+    }
+  ],
+  "401": {
+    "redirect": "/login",
+    "statusCode": 302
+},
+  "403": {
+    "rewrite": "/custom-forbidden.html",
+    "statusCode": 200
+  },
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/images/*.{png,jpg,gif, svg}", "/css/*"]
+  }
+}
