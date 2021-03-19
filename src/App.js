@@ -5,26 +5,20 @@ import DailyViewPage from "./pages/daily-view-page/daily-view-page";
 import AddMealPage from "./pages/add-meal/add-meal.page";
 import MealDetailsPage from './pages/view-meal-details/meal-details.page';
 
-function App() {
+
+function App(props) {
   return (
-    <Router className="content-container">
-      <header className="App-header">
-        <h4>Chow</h4>
-      </header>
-      <main>
-        <Switch>
-        <Route path="/" exact component={DailyViewPage} />
-        <Route path="/create" exact component={AddMealPage} />
-        <Route path="/details/:id" exact component={MealDetailsPage}/>
-        </Switch>
-      </main>
-      {/* <footer>
-        <span>
-          &copy; All rights reserved.{" "}
-          <a href="https://peculia.xyz">peculia.xyz</a>
-        </span>
-      </footer> */}
-    </Router>
+    <>
+      <Router className="content-container">
+        <main>
+          <Switch>
+            <Route path="/" exact component={DailyViewPage} />
+            <Route path="/create" exact component={AddMealPage} />
+            <Route path="/details/:id" exact component={MealDetailsPage} />
+          </Switch>
+        </main>
+      </Router>
+    </>
   );
 }
 

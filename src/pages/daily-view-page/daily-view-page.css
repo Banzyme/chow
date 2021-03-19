@@ -7,6 +7,10 @@
     grid-template-columns: auto auto;
 }
 
+list{
+    width: 70vw;
+}
+
 small{
     font-weight: normal;
     font-size: 0.6em;
