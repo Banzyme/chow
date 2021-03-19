@@ -59,8 +59,8 @@ const DailyViewPage = props => {
     props.history.push("/create");
   };
 
-  const gotoMealDetails = (params) => {
-    props.history.push(`/details/${params.id}`);
+  const gotoMealDetails = async (params) => {
+    props.history.push(`/details/${params.mealId}`);
   }
 
   return (

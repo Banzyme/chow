@@ -16,6 +16,7 @@ import { Edit, Lock, LockOpen } from '@material-ui/icons';
 import { useSwipeable } from "react-swipeable";
 import img from './../static/images/meusli.jpg'
 import './meal-card.css';
+import { Box } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -145,51 +146,50 @@ export function MealCard({ mealOptions, viewMealDetailsHanlder }) {
     }, [mealOptions]);   // Reload card if mealOptions change
 
     return (
-        <>
-            <Card boxShadow={3} variant="outlined" raised={true} {...swipeHandlers} className={classes.root}>
-                <CardHeader
-                    className="card-header"
-                    avatar={
-                        <Avatar aria-label="recipe" className={classes.avatar} style={{ backgroundColor: calorieColor }}>
-                            {visibleMealOption ? (visibleMealOption.calories ? visibleMealOption.calories : 0) : 0}
-                        </Avatar>
-                    }
-                    title={visibleMealOption ? truncateLongText({ text: visibleMealOption.name, maxLength: 30 }) : ""}
-                    subheader={visibleMealOption ? visibleMealOption.category : ""}
+
+        <Card variant="outlined" raised={true} {...swipeHandlers} className={classes.root}>
+            <CardHeader
+                className="card-header"
+                avatar={
+                    <Avatar aria-label="recipe" className={classes.avatar} style={{ backgroundColor: calorieColor }}>
+                        {visibleMealOption ? (visibleMealOption.calories ? visibleMealOption.calories : 0) : 0}
+                    </Avatar>
+                }
+                title={visibleMealOption ? truncateLongText({ text: visibleMealOption.name, maxLength: 30 }) : ""}
+                subheader={visibleMealOption ? visibleMealOption.category : ""}
+            />
+
+            <section className="card-body">
+                <CardContent onClick={handleEditClick}>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                        {visibleMealOption ? truncateLongText({ text: visibleMealOption.description }) : ""}
+                    </Typography>
+                </CardContent>
+                <CardMedia
+                    onClick={handleEditClick}
+                    className={classes.media}
+                    title={visibleMealOption?.name}
+                    image={visibleMealOption ? (visibleMealOption.thumbnailURL ? visibleMealOption.thumbnailURL : img) : img}
                 />
+            </section>
 
-                <section className="card-body">
-                    <CardContent onClick={handleEditClick}>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                            {visibleMealOption ? truncateLongText({ text: visibleMealOption.description }) : ""}
-                        </Typography>
-                    </CardContent>
-                    <CardMedia
-                        onClick={handleEditClick}
-                        className={classes.media}
-                        title={visibleMealOption?.name}
-                        image={visibleMealOption ? (visibleMealOption.thumbnailURL ? visibleMealOption.thumbnailURL : img) : img}
-                    />
-                </section>
-
-                <CardActions className="card-actions" disableSpacing>
-                    <IconButton onClick={handleLoveClick} aria-label="add to favorites">
-                        <FavoriteIcon />
-                    </IconButton>
-                    <IconButton onClick={handleShareClick} aria-label="share">
-                        <ShareIcon />
-                    </IconButton>
-                    <IconButton
-                        className={clsx(classes.expand, {
-                            [classes.expandOpen]: locked,
-                        })}
-                        onClick={handleLockClick}
-                        aria-expanded={locked}
-                        aria-label="lock meal option">
-                        {locked ? <Lock /> : <LockOpen />}
-                    </IconButton>
-                </CardActions>
-            </Card>
-        </>
+            <CardActions className="card-actions" disableSpacing>
+                <IconButton onClick={handleLoveClick} aria-label="add to favorites">
+                    <FavoriteIcon />
+                </IconButton>
+                <IconButton onClick={handleShareClick} aria-label="share">
+                    <ShareIcon />
+                </IconButton>
+                <IconButton
+                    className={clsx(classes.expand, {
+                        [classes.expandOpen]: locked,
+                    })}
+                    onClick={handleLockClick}
+                    aria-expanded={locked}
+                    aria-label="lock meal option">
+                    {locked ? <Lock /> : <LockOpen />}
+                </IconButton>
+            </CardActions>
+        </Card>
     );
 }
