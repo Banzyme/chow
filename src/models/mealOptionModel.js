@@ -14,7 +14,7 @@ export class MealOptionModel {
         }
 
         this.id = "";
-        this.mealId = "",
+        this.mealId = "";
         this.name = name; 
         this.description = description;
         this.category = category;
