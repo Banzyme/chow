@@ -9,6 +9,9 @@ import CardActions from '@material-ui/core/CardActions';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import Chip from '@material-ui/core/Chip';
+import FaceIcon from '@material-ui/icons/Face';
+import TouchAppIcon from '@material-ui/icons/TouchApp';
 import { red, green, yellow, orange, purple } from '@material-ui/core/colors';
 import { Lock, LockOpen } from '@material-ui/icons';
 import { useSwipeable } from "react-swipeable";
@@ -106,7 +109,7 @@ export function MealCard({ mealOptions, viewMealDetailsHanlder }) {
     });
 
     const handleRightSwipe = () => {
-        if(!locked){
+        if (!locked) {
             setLocked(true);
             alert(`Its confirmed, we are having ${visibleMealOption?.name} for ${visibleMealOption?.category}!`);
         }
@@ -114,7 +117,7 @@ export function MealCard({ mealOptions, viewMealDetailsHanlder }) {
 
 
     const handleLeftSwipe = (e) => {
-        if(locked){
+        if (locked) {
             console.warn("Lock applied, release lock to continue browsing");
             return;
         }
@@ -169,7 +172,11 @@ export function MealCard({ mealOptions, viewMealDetailsHanlder }) {
             </section>
 
             <CardActions className="card-actions" disableSpacing>
-                <span>swipe left </span>
+                {locked ? <div></div> : <Chip
+                    icon={<TouchAppIcon />}
+                    label="Swipe left"
+                    deleteIcon={null}
+                />}
                 {/* <IconButton onClick={handleLoveClick} aria-label="add to favorites">
                     <FavoriteIcon />
                 </IconButton>
@@ -183,7 +190,7 @@ export function MealCard({ mealOptions, viewMealDetailsHanlder }) {
                     onClick={handleLockClick}
                     aria-expanded={locked}
                     aria-label="lock meal option">
-                    {locked ? <Lock style={{color: "deeppink"}} /> : <LockOpen />}
+                    {locked ? <Lock style={{ color: "deeppink" }} /> : <LockOpen />}
                 </IconButton>
             </CardActions>
         </Card>
