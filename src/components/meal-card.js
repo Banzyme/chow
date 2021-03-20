@@ -102,32 +102,34 @@ export function MealCard({ mealOptions, viewMealDetailsHanlder }) {
     }
 
     const swipeHandlers = useSwipeable({
-        onSwipedLeft: (e) => viewPreviousOption(e),
-        onSwipedRight: (e) => viewNextOption(e),
+        onSwipedLeft: (e) => handleLeftSwipe(e),
+        onSwipedRight: (_) => handleRightSwipe(),
         ...swipeConfig,
     });
 
-    const viewNextOption = (e) => {
-        let newIdx = mealOptionIdx + 1;
-
-        if (newIdx >= mealOptions.length) {
-            newIdx = 0;
+    const handleRightSwipe = () => {
+        if(!locked){
+            setLocked(true);
+            alert(`Its confirmed, we are having ${visibleMealOption?.name} for ${visibleMealOption?.category}!`);
         }
-        setMealOptionIdx(newIdx);
-        setVisibleMealOption(mealsList[newIdx]);
-        getCalorieColor();
     };
 
 
-    const viewPreviousOption = (e) => {
-        let newIdx = mealOptionIdx - 1;
-
-        if (newIdx < 0) {
-            newIdx = 0;
+    const handleLeftSwipe = (e) => {
+        if(locked){
+            console.warn("Lock applied, release lock to continue browsing");
+            return;
         }
+        const newIdx = (mealOptionIdx + 1) >= mealOptions.length ? 0 : mealOptionIdx + 1;
+        console.debug("Swipe left, dismiss!", "New Idx", newIdx);
         setMealOptionIdx(newIdx);
         setVisibleMealOption(mealsList[newIdx]);
         getCalorieColor();
+
+        // const newIdx = (mealOptionIdx - 1) < 0 ? 0 : mealOptionIdx -1;
+        // setMealOptionIdx(newIdx);
+        // setVisibleMealOption(mealsList[newIdx]);
+        // getCalorieColor();
     };
 
     const truncateLongText = ({ text, maxLength = 90, noofEllipses = 3 }) => {
@@ -187,7 +189,7 @@ export function MealCard({ mealOptions, viewMealDetailsHanlder }) {
                     onClick={handleLockClick}
                     aria-expanded={locked}
                     aria-label="lock meal option">
-                    {locked ? <Lock /> : <LockOpen />}
+                    {locked ? <Lock style={{color: "deeppink"}} /> : <LockOpen />}
                 </IconButton>
             </CardActions>
         </Card>
