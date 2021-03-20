@@ -23,6 +23,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import Avatar from '@material-ui/core/Avatar';
 import defaultUserImg from './../../static/images/user-black.svg'
 import TwitterIcon from '@material-ui/icons/Twitter';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,37 +54,63 @@ const DailyViewPage = props => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const [mealOptions, setMealOptions] = useState([]);
-  const fetchUrl = `${AppSettings.mealsAPI.baseURL}/mealoptions`;
+  const fetchAllMealsUrl = `${AppSettings.mealsAPI.baseURL}/mealoptions`;
 
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
   }
 
-  useEffect(() => {
-    getUserInfo();
-    if (localStorage.getItem("mealOptionsList") === null) {
-      try {
-        fetch(fetchUrl)
-          .then(res => res.json())
-          .then(res => {
-            console.debug(`${res?.length} meal options returned from server`);
-            setMealOptions(res);
-            localStorage.setItem("mealOptionsList", JSON.stringify(res));
-          })
-          .catch((e) => {
-            setHasErros({ hasErrors: true });
-            console.error(e);
-          });
-      } catch {
-        console.warn("Server is unresponsive");
-      }
-
-    } else {
-      const cachedData = localStorage.getItem("mealOptionsList");
-      const parseMeals = JSON.parse(cachedData)
-      console.debug(`${parseMeals?.length} meal options returned from local storage cache`);
-      setMealOptions(parseMeals);
+  const handleClearCache = ()=> {
+    setDrawerOpen(false);
+    if (localStorage.getItem("mealOptionsList")){
+      localStorage.removeItem("mealOptionsList");
     }
+    loadMeals();
+  }
+
+  const loadMealsFromCache = ()=> {
+    let meals = localStorage.getItem("mealOptionsList");
+    if(meals != null){
+      try{
+        const parseMeals = JSON.parse(meals)
+        console.debug(`${parseMeals?.length} meal options returned from local storage cache`);
+        setMealOptions(parseMeals);
+        return true;
+      }catch(e){
+        console.error(e);
+        return false; // TODO: maybe send to remote log server or Az App insights?
+      }
+    }
+    return false;
+  }
+
+  const loadMeals = () => {
+    if(loadMealsFromCache()){
+      return;
+    }
+
+    fetch(fetchAllMealsUrl)
+    .then(res => {
+      if(res.ok){
+        return res.json();
+      }
+      return Promise.reject(`Unable to fetch meals from server. Status=${res?.status}  ${res?.body}`);
+    })
+    .then(res => {
+      console.debug(`${res?.length} meal options returned from server`);
+      setMealOptions(res);
+      localStorage.setItem("mealOptionsList", JSON.stringify(res));
+    })
+    .catch((e) => {
+      console.error(e);
+      alert(e);  // Replace with a nice modal ?
+    });
+
+  }
+
+  useEffect(() => {
+    loadUserInfo();
+    loadMeals();
   }, []);
 
   const currentDateTime = new Date();
@@ -94,7 +121,7 @@ const DailyViewPage = props => {
   const supperMeals = filterMealsByCategory({ allMealsList: mealOptions, category: mealCategory.supper });
   const eveningSnackMeals = filterMealsByCategory({ allMealsList: mealOptions, category: mealCategory.eveningSnack });
 
-  async function getUserInfo() {
+  async function loadUserInfo() {
     const response = await fetch("/.auth/me");
     if (response?.status == 200 || response?.ok) {
       console.debug("User info retrieved!")
@@ -171,9 +198,9 @@ const DailyViewPage = props => {
         onOpen={()=>{}}
       >
         <List>
-          {['Settings'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon><InboxIcon /></ListItemIcon>
+          {['Clear cache'].map((text, index) => (
+            <ListItem onClick={handleClearCache} button key={text}>
+              <ListItemIcon><DeleteIcon /></ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
           ))}

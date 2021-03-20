@@ -169,7 +169,7 @@ function AddMealPage(props) {
     }
   };
   return (
-    <>
+    <div className="content">
       <header>
         <h2>Add a new meal</h2>
       </header>
@@ -240,7 +240,7 @@ function AddMealPage(props) {
         </Alert>
       </Snackbar>
       {isLoading ? <LinearProgress color="secondary" /> : ""}
-    </>
+    </div>
   );
 }
 
