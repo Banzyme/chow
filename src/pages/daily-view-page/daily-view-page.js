@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
-import GroupedListItem from "../../components/grouped-list-item/grouped-list-item";
 import { mealCategory } from "../../models/models";
 import { AppSettings } from '../../shared/shared'
 import { MealCard } from "./../../components/components";
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
 import "./daily-view-page.css";
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -23,7 +20,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
-
+import Avatar from '@material-ui/core/Avatar';
+import defaultUserImg from './../../static/images/user-black.svg'
+import TwitterIcon from '@material-ui/icons/Twitter';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -120,12 +119,12 @@ const DailyViewPage = props => {
 
   const handleLogin = (e) => {
     // by deafult user will be redirected to home after login (i think...)
-    if(currentUser){
+    if (currentUser) {
       setAnchorEl(e.currentTarget);
       return;
     }
     props.history.push('/login');
-    window.location.reload(); 
+    window.location.reload();
     //
   }
 
@@ -141,7 +140,10 @@ const DailyViewPage = props => {
 
   const handleLogout = () => {
     setAnchorEl(null);
-    props.history.push('logout');
+    if(currentUser){
+      props.history.push('logout');
+      window.location.reload();
+    }
   };
 
   return (
@@ -154,7 +156,11 @@ const DailyViewPage = props => {
           <Typography variant="h5" className={classes.title}>
             {AppSettings.Apptitle}
           </Typography>
-          <Button color="inherit" onClick={handleLogin}>{currentUser ? currentUser.userDetails : "Login"}</Button>
+          {
+            currentUser ? <Avatar onClick={handleLogin} alt={currentUser ? currentUser.userDetails : "User"} src={defaultUserImg} /> :
+              <Button color="inherit" onClick={handleLogin}>{currentUser ? currentUser.userDetails : "Login"}</Button>
+          }
+
         </Toolbar>
       </AppBar>
 
@@ -164,24 +170,15 @@ const DailyViewPage = props => {
         onClose={toggleDrawer}
       >
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          {['Settings'].map((text, index) => (
             <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+              <ListItemIcon><InboxIcon /></ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
           ))}
         </List>
 
         <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-
       </SwipeableDrawer>
 
       <Menu
@@ -191,8 +188,9 @@ const DailyViewPage = props => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>Preferences</MenuItem>
+        <MenuItem onClick={handleClose}>{currentUser?.userDetails || "Guest" }</MenuItem>
+        <MenuItem><TwitterIcon/></MenuItem> 
+        <Divider />
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
 
