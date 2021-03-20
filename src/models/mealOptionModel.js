@@ -33,7 +33,7 @@ export class MealOptionModel {
     }
 
     generateMealId(){
-        return this.name.substring(0, 3) + this.getRandomInt(99999).toString();
+        return this.name.substring(0, 3).toUpperCase() + this.getRandomInt(99999).toString();
     }
 
     isNullOrEmpty(val){

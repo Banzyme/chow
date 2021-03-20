@@ -47,7 +47,7 @@ namespace ChowServerlessRestAPI
                 IEnumerable<MealOptionDto> meals)
     {
       log.LogDebug("Seacrhing for meal with mealID={id}.");
-      if (meals != null)
+      if (meals?.ToList().Count >  0)
       {
         return new OkObjectResult(meals.First());
       }
