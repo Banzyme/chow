@@ -1,3 +1,7 @@
+.content, .page-header{
+    padding: 8px !important;
+}
+
 .cardSection{
     margin-bottom: 1.2rem;
 }
