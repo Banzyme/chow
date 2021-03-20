@@ -10,13 +10,10 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { red, green, yellow, orange, purple } from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import { Edit, Lock, LockOpen } from '@material-ui/icons';
+import { Lock, LockOpen } from '@material-ui/icons';
 import { useSwipeable } from "react-swipeable";
 import img from './../static/images/meusli.jpg'
 import './meal-card.css';
-import { Box } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -172,6 +169,7 @@ export function MealCard({ mealOptions, viewMealDetailsHanlder }) {
             </section>
 
             <CardActions className="card-actions" disableSpacing>
+                <span>swipe left </span>
                 {/* <IconButton onClick={handleLoveClick} aria-label="add to favorites">
                     <FavoriteIcon />
                 </IconButton>

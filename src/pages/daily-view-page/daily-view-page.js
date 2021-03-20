@@ -24,11 +24,17 @@ import Avatar from '@material-ui/core/Avatar';
 import defaultUserImg from './../../static/images/user-black.svg'
 import TwitterIcon from '@material-ui/icons/Twitter';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     background: "indigo"
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -49,9 +55,12 @@ const filterMealsByCategory = ({ allMealsList, category }) => {
 
 const DailyViewPage = props => {
   const classes = useStyles();
-  const [hasErrors, setHasErros] = useState(false);
   const [currentUser, setCurrentUser] = useState();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [showBackdrop, setShowBackdrop] = useState(true);
+  const handleBackdropClose = () => {
+    setShowBackdrop(false);
+  };
 
   const [mealOptions, setMealOptions] = useState([]);
   const fetchAllMealsUrl = `${AppSettings.mealsAPI.baseURL}/mealoptions`;
@@ -60,23 +69,23 @@ const DailyViewPage = props => {
     setDrawerOpen(!drawerOpen);
   }
 
-  const handleClearCache = ()=> {
+  const handleClearCache = () => {
     setDrawerOpen(false);
-    if (localStorage.getItem("mealOptionsList")){
+    if (localStorage.getItem("mealOptionsList")) {
       localStorage.removeItem("mealOptionsList");
     }
     loadMeals();
   }
 
-  const loadMealsFromCache = ()=> {
+  const loadMealsFromCache = () => {
     let meals = localStorage.getItem("mealOptionsList");
-    if(meals != null){
-      try{
+    if (meals != null) {
+      try {
         const parseMeals = JSON.parse(meals)
         console.debug(`${parseMeals?.length} meal options returned from local storage cache`);
         setMealOptions(parseMeals);
         return true;
-      }catch(e){
+      } catch (e) {
         console.error(e);
         return false; // TODO: maybe send to remote log server or Az App insights?
       }
@@ -85,27 +94,29 @@ const DailyViewPage = props => {
   }
 
   const loadMeals = () => {
-    if(!(props.location?.state?.refresh) && loadMealsFromCache()){
+    if (!(props.location?.state?.refresh) && loadMealsFromCache()) {
+      setShowBackdrop(false);
       return;
     }
 
     fetch(fetchAllMealsUrl)
-    .then(res => {
-      if(res.ok){
-        return res.json();
-      }
-      return Promise.reject(`Unable to fetch meals from server. Status=${res?.status}  ${res?.body}`);
-    })
-    .then(res => {
-      console.debug(`${res?.length} meal options returned from server`);
-      setMealOptions(res);
-      localStorage.setItem("mealOptionsList", JSON.stringify(res));
-    })
-    .catch((e) => {
-      console.error(e);
-      alert(e);  // Replace with a nice modal ?
-    });
-
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Unable to fetch meals from server. Status=${res?.status}  ${res?.body}`);
+      })
+      .then(res => {
+        console.debug(`${res?.length} meal options returned from server`);
+        setMealOptions(res);
+        localStorage.setItem("mealOptionsList", JSON.stringify(res));
+        setShowBackdrop(false);
+      })
+      .catch((e) => {
+        console.error(e);
+        setShowBackdrop(false);
+        alert(e);  // Replace with a nice modal ?
+      });
   }
 
   useEffect(() => {
@@ -167,7 +178,7 @@ const DailyViewPage = props => {
 
   const handleLogout = () => {
     setAnchorEl(null);
-    if(currentUser){
+    if (currentUser) {
       props.history.push('logout');
       window.location.reload();
     }
@@ -175,6 +186,10 @@ const DailyViewPage = props => {
 
   return (
     <>
+      <Backdrop className={classes.backdrop} open={showBackdrop} onClick={handleBackdropClose}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+
       <AppBar className={classes.root} position="static">
         <Toolbar>
           <IconButton onClick={handleOpenLeftMenu} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
@@ -195,7 +210,7 @@ const DailyViewPage = props => {
         anchor="left"
         open={drawerOpen}
         onClose={toggleDrawer}
-        onOpen={()=>{}}
+        onOpen={() => { }}
       >
         <List>
           {['Clear cache'].map((text, index) => (
@@ -216,8 +231,8 @@ const DailyViewPage = props => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>{currentUser?.userDetails || "Guest" }</MenuItem>
-        <MenuItem><TwitterIcon/></MenuItem> 
+        <MenuItem onClick={handleClose}>{currentUser?.userDetails || "Guest"}</MenuItem>
+        <MenuItem><TwitterIcon /></MenuItem>
         <Divider />
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
