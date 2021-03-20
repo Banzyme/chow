@@ -85,7 +85,7 @@ const DailyViewPage = props => {
   }
 
   const loadMeals = () => {
-    if(loadMealsFromCache()){
+    if(!(props.location?.state?.refresh) && loadMealsFromCache()){
       return;
     }
 

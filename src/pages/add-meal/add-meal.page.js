@@ -86,7 +86,7 @@ function AddMealPage(props) {
 
   const goHome = () => {
     if (snackState.lastRide) {
-      props.history.push("/");
+      props.history.push("/", {refresh: true});
     }
   };
 
