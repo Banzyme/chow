@@ -17,14 +17,19 @@
       "redirect": "/.auth/logout"
     },
     {
-        "route": "/.auth/login/github",
-        "statusCode": 403
+      "route": "/.auth/login/github",
+      "statusCode": 403
+    },
+    {
+      "route": "/api/*",
+      "methods": ["POST"],
+      "allowedRoles": ["authenticated"]
     }
   ],
   "401": {
     "redirect": "/login",
     "statusCode": 302
-},
+  },
   "403": {
     "rewrite": "/custom-forbidden.html",
     "statusCode": 200
