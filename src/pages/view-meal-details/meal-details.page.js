@@ -19,6 +19,7 @@ function Alert(props) {
 }
 
 function MealDetailsPage({ history, match }) {
+  const mealId = match.params.id;
   const [selectedMeal, setSelectedMeal] = useState();
   const [snackState, setSnackState] = useState({ isOpen: false, msg: "Success", timeout: 2000, severity: "info", lastRide: false });
   const [isLoading, setIsLoading] = useState(true);
@@ -54,9 +55,14 @@ function MealDetailsPage({ history, match }) {
       return;
     }
 
-    const fetchUrl = `${AppSettings.mealsAPI.baseURL}/mealoptions/${match.params.id}`;
+    const fetchUrl = `${AppSettings.mealsAPI.baseURL}mealoptions/${match.params.id}`;
     fetch(fetchUrl)
-      .then(res => res.json())
+      .then(res => {
+        if(res.ok){
+          return res.json()
+        }
+        return Promise.reject(`Meal [ ${mealId} ] does not exist!`);
+      })
       .then(res => {
         console.debug(`Fetch meal by id ${match.params.id} returned`, res);
         setSelectedMeal(res);
@@ -64,37 +70,49 @@ function MealDetailsPage({ history, match }) {
       })
       .catch((e) => {
         console.error(e);
+        history.push('/');
       });
     setIsLoading(false);
 
   }
 
+  const deleteCachedMealData = () => {
+    const cachedData = localStorage.getItem(mealId);
+    if (cachedData) {
+      localStorage.removeItem(mealId);
+      // This is easier for now, maybe will do the filtering later
+      localStorage.removeItem("mealOptionsList");
+    }
+  }
+
   const handleDeleteAccept = () => {
     setShowModal(false);
     setIsLoading(true);
-    const cachedData = localStorage.getItem(match.params.id);
-    if (cachedData) {
-      localStorage.removeItem(match.params.id);
-    }
+    deleteCachedMealData()
 
-    fetch(`${AppSettings.mealsAPI.baseURL}/mealoptions?id=${selectedMeal.mealId}`, { method: 'DELETE' })
-      .then(response => response.json())
-      .then(res => {
-        setSnackState({
-          isOpen: true,
-          timeout: 700,
-          lastRide: true,
-          severity: "info",
-          msg: "Meal successfully deleted"
-        });
+    fetch(`${AppSettings.mealsAPI.baseURL}mealoptions?id=${selectedMeal.mealId}`, { method: 'DELETE' })
+      .then(response => {
+        if(response.ok){
+          console.debug("Delete response", response);
+          setSnackState({
+            isOpen: true,
+            timeout: 700,
+            lastRide: true,
+            severity: "info",
+            msg: "Meal successfully deleted"
+          });
+        }else{
+          setSnackState({
+            isOpen: true,
+            timeout: 700,
+            lastRide: true,
+            severity: "warning",
+            msg: "Item not deleted, please try again"
+          });
+        }
       })
       .catch(err => {
-        setSnackState({
-          isOpen: true,
-          timeout: 1500,
-          severity: "error",
-          msg: err
-        });
+        console.error(err);
       });
   };
 

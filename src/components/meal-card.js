@@ -9,14 +9,14 @@ import CardActions from '@material-ui/core/CardActions';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import Chip from '@material-ui/core/Chip';
+import FaceIcon from '@material-ui/icons/Face';
+import TouchAppIcon from '@material-ui/icons/TouchApp';
 import { red, green, yellow, orange, purple } from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import { Edit, Lock, LockOpen } from '@material-ui/icons';
+import { Lock, LockOpen } from '@material-ui/icons';
 import { useSwipeable } from "react-swipeable";
 import img from './../static/images/meusli.jpg'
 import './meal-card.css';
-import { Box } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -62,15 +62,15 @@ export function MealCard({ mealOptions, viewMealDetailsHanlder }) {
     const [mealOptionIdx, setMealOptionIdx] = useState(0);
     const [visibleMealOption, setVisibleMealOption] = useState();
     const [calorieColor, setCalorieColor] = useState(purple[500])
+    const [showDialog, setShowDialog] = useState(false);
 
     const handleLockClick = () => {
         setLocked(!locked);
-        console.debug(`Lock ${locked ? "released" : "applied"}!`);
     };
 
-    const getCalorieColor = () => {
+    const getCalorieColor = (meal) => {
 
-        const calorieValue = visibleMealOption?.calories ?? 0;
+        const calorieValue = meal?.calories ?? 0;
         if (calorieValue < 250) {
             setCalorieColor(green[600]);
             return;
@@ -83,51 +83,39 @@ export function MealCard({ mealOptions, viewMealDetailsHanlder }) {
 
         if (calorieValue > 350 && calorieValue <= 500) {
             setCalorieColor(orange[600]);
+
             return;
         }
-
         setCalorieColor(red[500]);
     }
+
 
     const handleEditClick = () => {
         viewMealDetailsHanlder(visibleMealOption);
     }
 
-    const handleLoveClick = () => {
-        console.debug("Love not implemented!");
-    }
-
-    const handleShareClick = () => {
-        console.debug("Share not implemented!");
-    }
-
     const swipeHandlers = useSwipeable({
-        onSwipedLeft: (e) => viewPreviousOption(e),
-        onSwipedRight: (e) => viewNextOption(e),
+        onSwipedLeft: (e) => handleLeftSwipe(e),
+        onSwipedRight: (_) => handleRightSwipe(),
         ...swipeConfig,
     });
 
-    const viewNextOption = (e) => {
-        let newIdx = mealOptionIdx + 1;
-
-        if (newIdx >= mealOptions.length) {
-            newIdx = 0;
+    const handleRightSwipe = () => {
+        if (!locked) {
+            setLocked(true);
+            setShowDialog(true);
         }
-        setMealOptionIdx(newIdx);
-        setVisibleMealOption(mealsList[newIdx]);
-        getCalorieColor();
     };
 
 
-    const viewPreviousOption = (e) => {
-        let newIdx = mealOptionIdx - 1;
-
-        if (newIdx < 0) {
-            newIdx = 0;
+    const handleLeftSwipe = (e) => {
+        if (locked) {
+            return;
         }
+        const newIdx = (mealOptionIdx + 1) >= mealOptions.length ? 0 : mealOptionIdx + 1;
         setMealOptionIdx(newIdx);
         setVisibleMealOption(mealsList[newIdx]);
-        getCalorieColor();
+        getCalorieColor(mealsList[newIdx]);
     };
 
     const truncateLongText = ({ text, maxLength = 90, noofEllipses = 3 }) => {
@@ -141,55 +129,73 @@ export function MealCard({ mealOptions, viewMealDetailsHanlder }) {
         if (mealOptions) {
             setVisibleMealOption(mealOptions[0]);
             setMealOptionsList(mealOptions);
-            getCalorieColor();
+            getCalorieColor(mealOptions[0]);
         }
     }, [mealOptions]);   // Reload card if mealOptions change
 
     return (
-
-        <Card variant="outlined" raised={true} {...swipeHandlers} className={classes.root}>
-            <CardHeader
-                className="card-header"
-                avatar={
-                    <Avatar aria-label="recipe" className={classes.avatar} style={{ backgroundColor: calorieColor }}>
-                        {visibleMealOption ? (visibleMealOption.calories ? visibleMealOption.calories : 0) : 0}
-                    </Avatar>
-                }
-                title={visibleMealOption ? truncateLongText({ text: visibleMealOption.name, maxLength: 30 }) : ""}
-                subheader={visibleMealOption ? visibleMealOption.category : ""}
-            />
-
-            <section className="card-body">
-                <CardContent onClick={handleEditClick}>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        {visibleMealOption ? truncateLongText({ text: visibleMealOption.description }) : ""}
-                    </Typography>
-                </CardContent>
-                <CardMedia
-                    onClick={handleEditClick}
-                    className={classes.media}
-                    title={visibleMealOption?.name}
-                    image={visibleMealOption ? (visibleMealOption.thumbnailURL ? visibleMealOption.thumbnailURL : img) : img}
+        <>
+            <Card variant="outlined" raised={true} {...swipeHandlers} className={classes.root}>
+                <CardHeader
+                    className="card-header"
+                    avatar={
+                        <Avatar aria-label="recipe" className={classes.avatar} style={{ backgroundColor: calorieColor }}>
+                            {visibleMealOption ? (visibleMealOption.calories ? visibleMealOption.calories : 0) : 0}
+                        </Avatar>
+                    }
+                    title={visibleMealOption ? truncateLongText({ text: visibleMealOption.name, maxLength: 30 }) : ""}
+                    subheader={visibleMealOption ? visibleMealOption.category : ""}
                 />
-            </section>
 
-            <CardActions className="card-actions" disableSpacing>
-                <IconButton onClick={handleLoveClick} aria-label="add to favorites">
-                    <FavoriteIcon />
-                </IconButton>
-                <IconButton onClick={handleShareClick} aria-label="share">
-                    <ShareIcon />
-                </IconButton>
-                <IconButton
-                    className={clsx(classes.expand, {
-                        [classes.expandOpen]: locked,
-                    })}
-                    onClick={handleLockClick}
-                    aria-expanded={locked}
-                    aria-label="lock meal option">
-                    {locked ? <Lock /> : <LockOpen />}
-                </IconButton>
-            </CardActions>
-        </Card>
+                <section className="card-body">
+                    <CardContent onClick={handleEditClick}>
+                        <Typography variant="body2" color="textSecondary" component="p">
+                            {visibleMealOption ? truncateLongText({ text: visibleMealOption.description }) : ""}
+                        </Typography>
+                    </CardContent>
+                    <CardMedia
+                        onClick={handleEditClick}
+                        className={classes.media}
+                        title={visibleMealOption?.name}
+                        image={visibleMealOption ? (visibleMealOption.thumbnailURL ? visibleMealOption.thumbnailURL : img) : img}
+                    />
+                </section>
+
+                <CardActions className="card-actions" disableSpacing>
+                    {locked ? <div></div> : <Chip
+                        icon={<TouchAppIcon />}
+                        label="Swipe left"
+                        deleteIcon={null}
+                    />}
+                    <IconButton
+                        className={clsx(classes.expand, {
+                            [classes.expandOpen]: locked,
+                        })}
+                        onClick={handleLockClick}
+                        aria-expanded={locked}
+                        aria-label="lock meal option">
+                        {locked ? <Lock style={{ color: "deeppink" }} /> : <LockOpen />}
+                    </IconButton>
+                </CardActions>
+            </Card>
+            <Dialog
+                open={showDialog}
+                onClose={() => { }}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">{"Meal selection"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        {`Its confirmed, we are having <b>${visibleMealOption?.name}</b> for <b>${visibleMealOption?.category}<?b>!`}
+                 </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={()=> setShowDialog(false)} color="primary" autoFocus>
+                        Ok
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </>
     );
 }

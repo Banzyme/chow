@@ -21,8 +21,8 @@
       "statusCode": 403
     },
     {
-      "route": "/api/*",
-      "methods": ["POST"],
+      "route": "/api/mealoptions",
+      "methods": ["POST", "PUT", "PATCH", "DELETE"],
       "allowedRoles": ["authenticated"]
     }
   ],
@@ -31,6 +31,10 @@
     "statusCode": 302
   },
   "403": {
+    "rewrite": "/custom-forbidden.html",
+    "statusCode": 200
+  },
+  "40311": {
     "rewrite": "/custom-forbidden.html",
     "statusCode": 200
   },
